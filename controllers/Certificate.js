@@ -3,6 +3,7 @@ const User = require("../models/User");
 require("dotenv").config();
 const Certifications = require('../models/Certificate.js');
 
+
 exports.createCertification = async (req, res) => {
   try {
     const {student, certname, yearOfCourses, AcademicYear, Category, googleDriveLink } = req.body;
@@ -49,7 +50,7 @@ await User.findByIdAndUpdate(userId, {
 
 exports.getCertificatesByYear = async (req, res) => {
   try {
-    const { Year } = req.body;
+    const { Year } = req.query  ;
 
    
     const parsedYear = parseInt(Year);
@@ -78,10 +79,24 @@ exports.getCertificatesByYear = async (req, res) => {
   }
 };
 
-
+exports.getAllCertificatesforadmin = async (req, res) => {
+  try {
+    console.log("inhere")
+    const certificates = await Certifications.find();
+    console.log(certificates);
+    return res.status(200).json({
+      success: true,
+      message: 'Certificates retrieved successfully',
+      data: certificates,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
 exports.getCertificatesByCategory = async (req, res) => {
   try {
-    const { category } = req.body;
+    const { category } = req.query  ;
 
    
     const certificates = await Certifications.find({ Category: category });
@@ -104,7 +119,7 @@ exports.getCertificatesByCategory = async (req, res) => {
 
 exports.getAllcertificates=async(req,res)=>{
     try{
-        const { studentId } = req.body;
+        const { studentId } = req.query;
         const user = await User.findById(studentId).populate('certifications');
 
         if (!user) {

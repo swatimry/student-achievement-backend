@@ -26,12 +26,12 @@ const Certifications = new mongoose.Schema({
         enum: ["Co-curricular", "extra-curricular"],
         required: true,
     },
-    googleDriveLink: [
+    googleDriveLink: 
         {
         type: String,
         required: true,
     }
-    ],
+    ,
 })
 
 module.exports = mongoose.model("Certifications", Certifications);

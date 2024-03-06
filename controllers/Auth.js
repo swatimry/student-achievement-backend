@@ -2,15 +2,19 @@ const bcrypt = require('bcrypt');
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const ErrorHandler=require("../utils/ErrorHandler.js")
 
 //signup route handler
 exports.signup = async(req,res) => {
     try {
         const {name,email,password,role} = req.body;
         //check if user already exist
+        console.log(name,email,password,role);
+       
         const existingUser = await User.findOne({email});
 
-        if(existingUser) {
+        if (existingUser) {
+            
             return res.status(400).json ({
                 success:false,
                 message:'User already exists',
@@ -25,7 +29,7 @@ exports.signup = async(req,res) => {
         catch(err) {
             return res.status(500).json({
                 success:false,
-                message: " error in hashing password",
+                message: "error in hashing password",
             });
         }
 
