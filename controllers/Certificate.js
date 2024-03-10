@@ -6,10 +6,10 @@ const Certifications = require('../models/Certificate.js');
 
 exports.createCertification = async (req, res) => {
   try {
-    const {student, certname, yearOfCourses, AcademicYear, Category, googleDriveLink } = req.body;
-    console.log( student, certname, yearOfCourses, AcademicYear, Category, googleDriveLink );
+    const {student, certname, yearOfCourses, AcademicYear, Category, googleDriveLink,student_name } = req.body;
+    console.log( student, certname, yearOfCourses, AcademicYear, Category, googleDriveLink,student_name );
     // Validate input as needed
-    if ( !student || !certname || !yearOfCourses || !AcademicYear || !Category || !googleDriveLink) {
+    if ( !student || !certname || !yearOfCourses || !AcademicYear || !Category || !googleDriveLink ||!student_name) {
       return res.status(400).json({
         success: false,
         message: 'Missing required fields',
@@ -24,6 +24,7 @@ exports.createCertification = async (req, res) => {
       AcademicYear,
       Category,
       googleDriveLink,
+      student_name
     });
     console.log(newCertification);
     const certificationId = newCertification._id;
@@ -46,7 +47,29 @@ await User.findByIdAndUpdate(userId, {
   }
 };
 
+exports.getCertificatesByAcademicYear = async (req, res) => {
+  try {
+    const { AcademicYear } = req.query  ;
 
+   
+    
+    
+   
+    const certificates = await Certifications.find({ AcademicYear: AcademicYear });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Certificates retrieved successfully',
+      data: certificates,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+};
 
 exports.getCertificatesByYear = async (req, res) => {
   try {
@@ -97,10 +120,10 @@ exports.getAllCertificatesforadmin = async (req, res) => {
 exports.getCertificatesByCategory = async (req, res) => {
   try {
     const { category } = req.query  ;
-
+    console.log(category);
    
     const certificates = await Certifications.find({ Category: category });
-
+    console.log("hre",certificates);
 
 
     return res.status(200).json({

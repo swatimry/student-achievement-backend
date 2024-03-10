@@ -16,6 +16,10 @@ const Certifications = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    student_name:{
+       type:String,
+       required:true,
+    },
     AcademicYear: {
         type: String,
         enum: ["SE", "TE","BE"],
@@ -23,7 +27,7 @@ const Certifications = new mongoose.Schema({
     },
     Category : {
         type: String,
-        enum: ["Co-curricular", "extra-curricular"],
+        enum: ["Co-curricular", "Extra-curricular"],
         required: true,
     },
     googleDriveLink: 
